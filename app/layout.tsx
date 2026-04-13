@@ -10,7 +10,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,20 +38,30 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProvider>
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
-            <Show when="signed-out">
-              <SignInButton />
-              <SignUpButton>
-                <button className="bg-purple-700 text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </Show>
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
-          </header>
-          {children}
+          <Show when="signed-out">
+            <div className="w-full min-h-screen flex flex-col justify-center items-center p-4 gap-4">
+              <p className="font-semibold text-xl">Quiz app</p>
+              <div className="flex gap-3">
+                <SignInButton />
+                <SignUpButton mode="modal">
+                  <button className="bg-blue-700 text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </div>
+            </div>
+          </Show>
+
+          <Show when="signed-in">
+            <div className="bg-gray-200 h-screen">
+              <header className="flex justify-between px-10 py-5 bg-white">
+                <p className="text-2xl font-semibold">Quiz App</p>
+                <UserButton />
+              </header>
+
+              <div className="flex justify-center">{children}</div>
+            </div>
+          </Show>
         </ClerkProvider>
       </body>
     </html>
