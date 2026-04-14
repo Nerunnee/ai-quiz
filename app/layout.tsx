@@ -9,6 +9,8 @@ import {
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { History } from "./_components/History";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -59,7 +61,13 @@ export default function RootLayout({
                 <UserButton />
               </header>
 
-              <div className="flex justify-center">{children}</div>
+              <div>
+                <SidebarProvider>
+                  <History />
+                  <SidebarTrigger />
+                  <main className="ml-110">{children}</main>
+                </SidebarProvider>
+              </div>
             </div>
           </Show>
         </ClerkProvider>

@@ -2,13 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createPrompt } from "@/lib/articles/createPrompt";
-import { FileText } from "lucide-react";
+import { createSummarize } from "@/lib/articles/createSummarize";
+import { useAuth } from "@clerk/nextjs";
+
+import { FileText, LoaderCircle } from "lucide-react";
 import { ChangeEventHandler, useState } from "react";
 
 export const InputSections = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const { userId } = useAuth();
 
   const handleChangeTitle: ChangeEventHandler<
     HTMLInputElement,
@@ -18,19 +23,23 @@ export const InputSections = () => {
   };
 
   const handleChangeContent: ChangeEventHandler<
-    HTMLInputElement,
-    HTMLInputElement
+    HTMLTextAreaElement,
+    HTMLTextAreaElement
   > = (event) => {
     setContent(event.target.value);
   };
+
   const onSubmit = async () => {
-    const credentials = {
-      title,
-      content,
-    };
+    if (!userId) return;
 
     try {
-      await createPrompt(credentials);
+      setLoading(true);
+      setSuccess(false);
+      await createSummarize(title, content, userId);
+      setSuccess(true);
+      setTitle("");
+      setContent("");
+      setLoading(false);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -56,17 +65,27 @@ export const InputSections = () => {
           <FileText size={15} />
           Article content
         </p>
-        <Input
+        <textarea
           value={content}
-          type="text"
           placeholder="Paste your article content here..."
-          className="h-30"
+          className="h-30 border rounded-lg p-2"
           onChange={handleChangeContent}
         />
       </div>
 
-      <div className="flex justify-end">
-        <Button onClick={onSubmit}>Generate summary</Button>
+      <div className="flex justify-between items-center">
+        <Button onClick={onSubmit} disabled={loading}>
+          {loading ? (
+            <LoaderCircle className="animate-spin w-8 h-8" />
+          ) : (
+            "Generate summary"
+          )}
+        </Button>
+        {success && (
+          <p className="text-sm text-green-600 font-medium">
+            ✅ Summary successfully generated!
+          </p>
+        )}
       </div>
     </div>
   );

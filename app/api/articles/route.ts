@@ -1,21 +1,26 @@
+import { genQuiz } from "@/lib/gemini/generate-quiz";
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
 
-export default async function POST(request: NextRequest) {
-  const credentials = await request.json();
+type Article = {
+  title: string;
+  content: string;
+};
+export async function POST(request: NextRequest) {
+  const article: Article = await request.json();
+  console.log(article);
 
-  // quiz = gemini
-  // prisma save article, quiz
+  const quizzes = await genQuiz(article);
 
-  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-  const ai = new GoogleGenAI({ apiKey });
+  if (!quizzes) {
+    return NextResponse.json({ message: "not created" });
+  }
 
-  const prompt = credentials;
+  const cleaned = quizzes
+    .replace(/```json\n?/g, "")
+    .replace(/```/g, "")
+    .trim();
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
+  const parse = JSON.parse(cleaned);
 
-  return NextResponse.json({ response });
+  return NextResponse.json({ parse });
 }
