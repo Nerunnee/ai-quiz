@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         message: "Summarize completed",
-        article: createdArticles,
+        articleId: createdArticles.id,
         summary: createdArticles.summary,
       },
       { status: 200 },

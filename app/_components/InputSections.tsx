@@ -13,7 +13,7 @@ export const InputSections = () => {
   const [loading, setLoading] = useState(false);
   const [summarized, setSummarized] = useState<{
     message: string;
-    article: string;
+    articleId: string;
     summary: string;
   } | null>(null);
   const { userId } = useAuth();
@@ -45,15 +45,17 @@ export const InputSections = () => {
 
   const onSubmitQuiz = async () => {
     const articles = {
+      id: summarized?.articleId!,
       title,
       content,
     };
+
     if (!userId) return;
 
     try {
       setLoading(true);
 
-      const summarizedContent = await createQuiz(articles);
+      await createQuiz(articles);
 
       setLoading(false);
     } catch (error) {
@@ -68,7 +70,7 @@ export const InputSections = () => {
           title={title}
           summarized={summarized}
           loading={loading}
-          onSubmit={onSubmit}
+          onSubmit={onSubmitQuiz}
         />
       ) : (
         <ArticlesSection

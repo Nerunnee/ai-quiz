@@ -65,7 +65,7 @@ export default function RootLayout({
                 <SidebarProvider>
                   <History />
                   <SidebarTrigger />
-                  <main className="ml-110">{children}</main>
+                  <main>{children}</main>
                 </SidebarProvider>
               </div>
             </div>

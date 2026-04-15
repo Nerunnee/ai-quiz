@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, LoaderCircle } from "lucide-react";
+import Link from "next/link";
 
 type SummarizedContentProps = {
   title: string;
@@ -26,17 +27,19 @@ export const SummarizedContent = (props: SummarizedContentProps) => {
           See Content
         </Button>
 
-        <Button
-          onClick={onSubmit}
-          disabled={loading}
-          className="px-4 py-3 cursor-pointer"
-        >
-          {loading ? (
-            <LoaderCircle className="animate-spin w-8 h-8" />
-          ) : (
-            "Take a quiz"
-          )}
-        </Button>
+        <Link href="/id">
+          <Button
+            onClick={onSubmit}
+            disabled={loading}
+            className="px-4 py-3 cursor-pointer"
+          >
+            {loading ? (
+              <LoaderCircle className="animate-spin w-8 h-8" />
+            ) : (
+              "Take a quiz"
+            )}
+          </Button>
+        </Link>
       </div>
     </div>
   );

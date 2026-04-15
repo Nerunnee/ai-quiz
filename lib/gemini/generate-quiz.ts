@@ -6,10 +6,7 @@ type Article = {
 };
 
 export const genQuiz = async (article: Article) => {
-  console.log("article: ", article);
-
   const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-  console.log("apiKey: ", apiKey);
 
   const ai = new GoogleGenAI({ apiKey });
 
