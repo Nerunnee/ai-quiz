@@ -6,6 +6,8 @@ import {
 } from "@/components/ui/sidebar";
 import prisma from "@/lib/prisma";
 import { DeleteArticleButton } from "./DeleteArticleButton";
+import { link } from "fs";
+import Link from "next/link";
 
 export const History = async () => {
   const articles = await prisma.article.findMany();
@@ -18,14 +20,13 @@ export const History = async () => {
       <SidebarContent>
         <SidebarGroup className="flex flex-col font-medium">
           {articles.map((article) => (
-            <div
-              key={article.id}
-              className="flex justify-between items-center cursor-pointer rounded-2xl hover:bg-cyan-700 hover:text-white"
-            >
-              <p className="py-2.5 px-2 ">{article.title}</p>
+            <Link key={article.id} href={`/${article.id}`}>
+              <div className="flex justify-between items-center cursor-pointer rounded-2xl hover:bg-cyan-700 hover:text-white">
+                <p className="py-2.5 px-2 ">{article.title}</p>
 
-              <DeleteArticleButton id={article.id} />
-            </div>
+                <DeleteArticleButton id={article.id} />
+              </div>
+            </Link>
           ))}
         </SidebarGroup>
       </SidebarContent>

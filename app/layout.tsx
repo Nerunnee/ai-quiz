@@ -11,6 +11,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { History } from "./_components/History";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -57,7 +58,9 @@ export default function RootLayout({
           <Show when="signed-in">
             <div className="bg-gray-200 h-screen">
               <header className="flex justify-between px-10 py-5 bg-white">
-                <p className="text-2xl font-semibold">Quiz App</p>
+                <Link href="/">
+                  <p className="text-2xl font-semibold">Quiz App</p>
+                </Link>
                 <UserButton />
               </header>
 

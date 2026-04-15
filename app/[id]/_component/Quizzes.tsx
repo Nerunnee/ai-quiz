@@ -7,12 +7,12 @@ type Quiz = {
   id: string;
   question: string;
   options: string[];
-  answer: number;
+  answer: string;
 };
 
 export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
   const [current, setCurrent] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
@@ -20,10 +20,10 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
   const quiz = quizzes[current];
   const total = quizzes.length;
 
-  const handleSelect = (index: number) => {
+  const handleSelect = (option: string) => {
     if (selected !== null) return;
-    setSelected(index);
-    if (index === quiz.answer) setScore((s) => s + 1);
+    setSelected(option);
+    if (option === quiz.answer) setScore((s) => s + 1);
   };
 
   const handleNext = () => {
@@ -72,9 +72,7 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      {/* Quiz Card */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md overflow-hidden">
-        {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <Zap size={15} className="text-gray-700" />
@@ -90,12 +88,10 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
           </button>
         </div>
 
-        {/* Subtitle */}
         <p className="text-xs text-gray-400 px-5 pt-3 pb-0">
           Take a quick test about your knowledge from your content
         </p>
 
-        {/* Question + Counter */}
         <div className="px-5 pt-4 pb-3 flex items-start justify-between gap-4">
           <p className="text-sm font-medium text-gray-800 leading-snug">
             {quiz.question}
@@ -105,16 +101,15 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
           </span>
         </div>
 
-        {/* Options Grid */}
         <div className="grid grid-cols-2 gap-2 px-5 pb-5">
           {quiz.options.map((option, i) => {
             let style =
               "border border-gray-200 text-gray-700 bg-white hover:border-gray-400 hover:bg-gray-50";
 
             if (selected !== null) {
-              if (i === quiz.answer) {
+              if (option === quiz.answer) {
                 style = "border border-green-400 bg-green-50 text-green-700";
-              } else if (i === selected && selected !== quiz.answer) {
+              } else if (option === selected) {
                 style = "border border-red-300 bg-red-50 text-red-600";
               } else {
                 style = "border border-gray-100 text-gray-400 bg-gray-50";
@@ -124,7 +119,7 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
             return (
               <button
                 key={i}
-                onClick={() => handleSelect(i)}
+                onClick={() => handleSelect(option)}
                 disabled={selected !== null}
                 className={`rounded-xl px-4 py-3 text-sm font-medium text-center transition-all duration-150 ${style} ${
                   selected === null ? "cursor-pointer" : "cursor-default"
@@ -136,7 +131,6 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
           })}
         </div>
 
-        {/* Next Button */}
         {selected !== null && (
           <div className="px-5 pb-5">
             <button
@@ -149,7 +143,6 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
         )}
       </div>
 
-      {/* Cancel Modal */}
       {showCancel && (
         <div className="fixed inset-0 bg-black/25 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-xs p-6">

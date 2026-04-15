@@ -4,7 +4,7 @@ import Link from "next/link";
 
 type SummarizedContentProps = {
   title: string;
-  summarized: { summary: string };
+  summarized: { summary: string; articleId: string };
   loading: boolean;
   onSubmit: () => void;
 };
@@ -27,7 +27,7 @@ export const SummarizedContent = (props: SummarizedContentProps) => {
           See Content
         </Button>
 
-        <Link href="/id">
+        <Link href={`/${summarized.articleId}`}>
           <Button
             onClick={onSubmit}
             disabled={loading}
