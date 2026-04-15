@@ -1,9 +1,9 @@
-type Article = {
+type Articles = {
   title: string;
   content: string;
 };
 
-export const createQuiz = async (articles: Article) => {
+export const createQuiz = async (articles: Articles) => {
   await fetch("api/articles", {
     method: "POST",
     headers: {
