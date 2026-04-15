@@ -1,20 +1,16 @@
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
+import { QuizClient } from "./_component/Quizzes";
 
-export default async function Quizzes() {
+export default async function QuizPage() {
   const quizzes = await prisma.quiz.findMany();
 
-  return (
-    <div>
-      {quizzes.map((quiz) => (
-        <div key={quiz.id}>
-          <div>
-            <p>{quiz.question}</p>
-          </div>
+  const normalized = quizzes.map((quiz) => ({
+    ...quiz,
+    options: Array.isArray(quiz.options)
+      ? quiz.options
+      : JSON.parse(quiz.options as unknown as string),
+  }));
 
-          <p className="grid grid-cols-2 gap-2">{quiz.options}</p>
-        </div>
-      ))}
-    </div>
-  );
+  return <QuizClient quizzes={normalized} />;
 }
