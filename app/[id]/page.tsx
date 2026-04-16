@@ -16,7 +16,7 @@ export default async function QuizPage({
   });
 
   if (!article) {
-    return <div>Article олдсонгүй</div>;
+    return <div>Not found article</div>;
   }
 
   const normalizedQuizzes = article.quizzes.map((quiz) => ({
@@ -25,8 +25,6 @@ export default async function QuizPage({
       ? quiz.options
       : JSON.parse(quiz.options as unknown as string),
   }));
-
-  console.log(article);
 
   return (
     <div>

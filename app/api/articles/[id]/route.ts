@@ -8,12 +8,12 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    await prisma.$transaction(async (a) => {
-      await a.quiz.deleteMany({
-        where: { id },
+    await prisma.$transaction(async (tx) => {
+      await tx.quiz.deleteMany({
+        where: { articleId: id },
       });
 
-      await a.article.delete({
+      await tx.article.delete({
         where: { id },
       });
     });
@@ -21,8 +21,9 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      message: `ustgahad aldaaa garchlooooo ${error}`,
-    });
+    return NextResponse.json(
+      { message: `Устгахад алдаа гарчлөө: ${error}` },
+      { status: 500 },
+    );
   }
 }

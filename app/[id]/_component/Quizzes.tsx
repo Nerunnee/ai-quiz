@@ -20,10 +20,16 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
   const quiz = quizzes[current];
   const total = quizzes.length;
 
+  const answerIndex = parseInt(quiz.answer);
+  const correctOption =
+    !isNaN(answerIndex) && answerIndex >= 0 && answerIndex < quiz.options.length
+      ? quiz.options[answerIndex]
+      : quiz.answer;
+
   const handleSelect = (option: string) => {
     if (selected !== null) return;
     setSelected(option);
-    if (option === quiz.answer) setScore((s) => s + 1);
+    if (option === correctOption) setScore((s) => s + 1);
   };
 
   const handleNext = () => {
@@ -107,7 +113,7 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
               "border border-gray-200 text-gray-700 bg-white hover:border-gray-400 hover:bg-gray-50";
 
             if (selected !== null) {
-              if (option === quiz.answer) {
+              if (option === correctOption) {
                 style = "border border-green-400 bg-green-50 text-green-700";
               } else if (option === selected) {
                 style = "border border-red-300 bg-red-50 text-red-600";
