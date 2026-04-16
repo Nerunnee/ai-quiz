@@ -28,13 +28,14 @@ export default async function QuizPage({
 
   return (
     <div>
-      <h1>{article.title}</h1>
-      <p>{article.content}</p>
-
       {normalizedQuizzes.length > 0 ? (
-        <QuizClient quizzes={normalizedQuizzes} />
+        <QuizClient
+          quizzes={normalizedQuizzes}
+          title={article.title}
+          content={article.content}
+        />
       ) : (
-        <p>Энэ нийтлэлд quiz байхгүй байна</p>
+        <p>Таны асуултуудыг бэлдэж байна...</p>
       )}
     </div>
   );

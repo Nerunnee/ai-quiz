@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Zap, X } from "lucide-react";
+import { Zap, X, CheckCircle, XCircle } from "lucide-react";
+import { Article } from "./Article";
 
 type Quiz = {
   id: string;
@@ -10,17 +11,34 @@ type Quiz = {
   answer: string;
 };
 
-export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
+type Answer = {
+  question: string;
+  selected: string;
+  correct: string;
+  isCorrect: boolean;
+};
+
+export function QuizClient({
+  quizzes,
+  content,
+  title,
+}: {
+  quizzes: Quiz[];
+  content: string;
+  title: string;
+}) {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
   const quiz = quizzes[current];
   const total = quizzes.length;
 
   const answerIndex = parseInt(quiz.answer);
+
   const correctOption =
     !isNaN(answerIndex) && answerIndex >= 0 && answerIndex < quiz.options.length
       ? quiz.options[answerIndex]
@@ -33,6 +51,17 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
   };
 
   const handleNext = () => {
+    const isCorrect = selected === correctOption;
+    setAnswers((prev) => [
+      ...prev,
+      {
+        question: quiz.question,
+        selected: selected ?? "",
+        correct: correctOption,
+        isCorrect,
+      },
+    ]);
+
     if (current + 1 >= total) {
       setFinished(true);
     } else {
@@ -47,24 +76,78 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
     setScore(0);
     setFinished(false);
     setShowCancel(false);
+    setAnswers([]);
   };
 
   if (finished) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md p-8 text-center">
-          <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5">
-            <Zap className="text-green-500" size={24} />
+      <div className="bg-gray-50 p-4 rounded-2xl mt-12">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md p-8">
+          <div className="text-center mb-6">
+            <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Zap className="text-green-500" size={24} />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-1">
+              Quiz Complete!
+            </h2>
+            <p className="text-sm text-gray-400">
+              Your score:{" "}
+              <span className="font-semibold text-gray-700">
+                {score} / {total}
+              </span>
+            </p>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-1">
-            Quiz Complete!
-          </h2>
-          <p className="text-sm text-gray-400 mb-6">
-            You scored{" "}
-            <span className="font-semibold text-gray-700">
-              {score} / {total}
-            </span>
-          </p>
+
+          <div className="space-y-3 mb-6">
+            {answers.map((a, i) => (
+              <div
+                key={i}
+                className={`rounded-xl p-4 border ${
+                  a.isCorrect
+                    ? "bg-green-50 border-green-100"
+                    : "bg-red-50 border-red-100"
+                }`}
+              >
+                <div className="flex items-start gap-2">
+                  {a.isCorrect ? (
+                    <CheckCircle
+                      size={16}
+                      className="text-green-500 mt-0.5 shrink-0"
+                    />
+                  ) : (
+                    <XCircle
+                      size={16}
+                      className="text-red-400 mt-0.5 shrink-0"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-800 mb-1">
+                      {i + 1}. {a.question}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Таны хариулт:{" "}
+                      <span
+                        className={
+                          a.isCorrect ? "text-green-600" : "text-red-500"
+                        }
+                      >
+                        {a.selected}
+                      </span>
+                    </p>
+                    {!a.isCorrect && (
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Зөв хариулт:{" "}
+                        <span className="text-green-600 font-medium">
+                          {a.correct}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           <button
             onClick={handleRestart}
             className="w-full py-3 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
@@ -77,8 +160,9 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="bg-gray-50 p-4 rounded-2xl mt-12">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md overflow-hidden">
+        <Article content={content} title={title} />
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <Zap size={15} className="text-gray-700" />
@@ -113,12 +197,14 @@ export function QuizClient({ quizzes }: { quizzes: Quiz[] }) {
               "border border-gray-200 text-gray-700 bg-white hover:border-gray-400 hover:bg-gray-50";
 
             if (selected !== null) {
-              if (option === correctOption) {
-                style = "border border-green-400 bg-green-50 text-green-700";
-              } else if (option === selected) {
+              if (option === selected) {
                 style = "border border-red-300 bg-red-50 text-red-600";
               } else {
                 style = "border border-gray-100 text-gray-400 bg-gray-50";
+              }
+
+              if (option === correctOption) {
+                style = "border border-green-400 bg-green-50 text-green-700";
               }
             }
 

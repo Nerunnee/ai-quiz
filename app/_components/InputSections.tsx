@@ -6,6 +6,7 @@ import { ChangeEventHandler, useState } from "react";
 import { SummarizedContent } from "./SummarizedSection";
 import { ArticlesSection } from "./ArticlesSection";
 import { createQuiz } from "@/lib/articles/createQuiz";
+import { useRouter } from "next/navigation";
 
 export const InputSections = () => {
   const [title, setTitle] = useState("");
@@ -17,6 +18,7 @@ export const InputSections = () => {
     summary: string;
   } | null>(null);
   const { userId } = useAuth();
+  const router = useRouter();
 
   const handleChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
     setTitle(event.target.value);

@@ -56,8 +56,8 @@ export default function RootLayout({
           </Show>
 
           <Show when="signed-in">
-            <div className="bg-gray-200 h-screen">
-              <header className="flex justify-between px-10 py-5 bg-white">
+            <div className="bg-gray-200 min-h-fit">
+              <header className="flex justify-between px-10 py-5 bg-white z-50">
                 <Link href="/">
                   <p className="text-2xl font-semibold">Quiz App</p>
                 </Link>
@@ -67,8 +67,11 @@ export default function RootLayout({
               <div>
                 <SidebarProvider>
                   <History />
+
                   <SidebarTrigger />
-                  <main>{children}</main>
+                  <main className="min-h-screen w-full flex items-start justify-center">
+                    {children}
+                  </main>
                 </SidebarProvider>
               </div>
             </div>
