@@ -1,16 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, LoaderCircle } from "lucide-react";
-import Link from "next/link";
+import { Article } from "../[id]/_component/Article";
+import { SeeContent } from "./SeeContent";
 
 type SummarizedContentProps = {
   title: string;
+  content: string;
   summarized: { summary: string; articleId: string };
   loading: boolean;
   onSubmit: () => void;
 };
 
 export const SummarizedContent = (props: SummarizedContentProps) => {
-  const { title, summarized, loading, onSubmit } = props;
+  const { title, content, summarized, loading, onSubmit } = props;
   return (
     <div className="flex flex-col gap-5">
       <p className="text-sm font-semibold text-muted-foreground flex items-center mt-5">
@@ -22,24 +24,23 @@ export const SummarizedContent = (props: SummarizedContentProps) => {
 
       <p>{summarized.summary}</p>
 
-      <div className="flex justify-between">
-        <Button className="px-4 py-3 cursor-pointer bg-gray-500">
-          See Content
-        </Button>
+      <div className="flex justify-between items-center">
+        <SeeContent content={content} title={title} />
 
-        <Link href={`/${summarized.articleId}`}>
-          <Button
-            onClick={onSubmit}
-            disabled={loading}
-            className="px-4 py-3 cursor-pointer"
-          >
-            {loading ? (
+        <Button
+          onClick={onSubmit}
+          disabled={loading}
+          className="px-4 py-3 cursor-pointer"
+        >
+          {loading ? (
+            <div className="flex gap-3 items-center">
               <LoaderCircle className="animate-spin w-8 h-8" />
-            ) : (
-              "Take a quiz"
-            )}
-          </Button>
-        </Link>
+              <p>Generating quiz...</p>
+            </div>
+          ) : (
+            "Take a quiz"
+          )}
+        </Button>
       </div>
     </div>
   );

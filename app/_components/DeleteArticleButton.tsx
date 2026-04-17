@@ -10,6 +10,8 @@ export const DeleteArticleButton = ({ id }: { id: string }) => {
     if (!confirm("Are you sure you want to delete this?")) return;
 
     await fetch(`/api/articles/${id}`, { method: "DELETE" });
+
+    router.push("/");
     router.refresh();
   };
 

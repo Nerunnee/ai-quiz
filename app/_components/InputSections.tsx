@@ -58,6 +58,8 @@ export const InputSections = () => {
       setLoading(true);
 
       await createQuiz(articles);
+      router.push(`/${summarized?.articleId}`);
+      router.refresh();
 
       setLoading(false);
     } catch (error) {
@@ -70,6 +72,7 @@ export const InputSections = () => {
       {summarized ? (
         <SummarizedContent
           title={title}
+          content={content}
           summarized={summarized}
           loading={loading}
           onSubmit={onSubmitQuiz}

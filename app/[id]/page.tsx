@@ -16,7 +16,7 @@ export default async function QuizPage({
   });
 
   if (!article) {
-    return <div>Not found article</div>;
+    return <div>Please delete this section and try again.</div>;
   }
 
   const normalizedQuizzes = article.quizzes.map((quiz) => ({
@@ -28,14 +28,12 @@ export default async function QuizPage({
 
   return (
     <div>
-      {normalizedQuizzes.length > 0 ? (
+      {normalizedQuizzes.length > 0 && article.quizzes && (
         <QuizClient
           quizzes={normalizedQuizzes}
           title={article.title}
           content={article.content}
         />
-      ) : (
-        <p>Таны асуултуудыг бэлдэж байна...</p>
       )}
     </div>
   );

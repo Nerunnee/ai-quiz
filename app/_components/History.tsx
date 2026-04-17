@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/sidebar";
 import prisma from "@/lib/prisma";
 import { DeleteArticleButton } from "./DeleteArticleButton";
-import { link } from "fs";
 import Link from "next/link";
 
 export const History = async () => {

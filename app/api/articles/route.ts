@@ -1,5 +1,6 @@
 import { genQuiz } from "@/lib/gemini/generate-quiz";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 type Article = {
@@ -39,6 +40,8 @@ export async function POST(request: NextRequest) {
         articleId: id,
       })),
     });
+
+    revalidatePath(`/${id}`);
 
     return NextResponse.json({ savedQuizzes });
   } catch (error) {

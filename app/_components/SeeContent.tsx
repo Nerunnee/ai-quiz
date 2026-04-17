@@ -14,18 +14,13 @@ type Articles = {
   title: string;
 };
 
-export const Article = (props: Articles) => {
+export const SeeContent = (props: Articles) => {
   const { content, title } = props;
 
   return (
-    <div className="p-4">
+    <div>
       <Dialog>
         <div className="flex justify-between items-center">
-          <Link href="/">
-            <p className="border rounded-sm p-1 hover:bg-cyan-700 hover:text-white">
-              <ChevronLeft />
-            </p>
-          </Link>
           <DialogTrigger className="border p-2 rounded-sm text-sm cursor-pointer hover:bg-cyan-700 hover:text-white">
             See Content
           </DialogTrigger>
