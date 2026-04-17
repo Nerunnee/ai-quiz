@@ -203,7 +203,7 @@ export function QuizClient({
                 style = "border border-gray-100 text-gray-400 bg-gray-50";
               }
 
-              if (option === correctOption) {
+              if (option === correctOption && option === selected) {
                 style = "border border-green-400 bg-green-50 text-green-700";
               }
             }
