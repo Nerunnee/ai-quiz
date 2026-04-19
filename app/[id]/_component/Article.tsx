@@ -22,11 +22,11 @@ export const Article = (props: Articles) => {
       <Dialog>
         <div className="flex justify-between items-center">
           <Link href="/">
-            <p className="border rounded-sm p-1 hover:bg-cyan-700 hover:text-white">
+            <p className="border rounded-sm p-1 hover:bg-gray-800 hover:text-white">
               <ChevronLeft />
             </p>
           </Link>
-          <DialogTrigger className="border p-2 rounded-sm text-sm cursor-pointer hover:bg-cyan-700 hover:text-white">
+          <DialogTrigger className="border p-2 rounded-sm text-sm cursor-pointer hover:bg-gray-800 hover:text-white">
             See Content
           </DialogTrigger>
         </div>

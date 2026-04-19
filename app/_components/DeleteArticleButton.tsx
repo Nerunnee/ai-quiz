@@ -16,11 +16,11 @@ export const DeleteArticleButton = ({ id }: { id: string }) => {
   };
 
   return (
-    <Trash
-      size={16}
-      color="red"
-      className="cursor-pointer mr-1 hover:p-0.5 hover:bg-white hover:rounded-sm"
+    <button
       onClick={handleDelete}
-    />
+      className="text-red-500 p-0.5 hover:rounded-xs hover:bg-white transition-colors cursor-pointer mr-2"
+    >
+      <Trash size={14} />
+    </button>
   );
 };
